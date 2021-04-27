@@ -11,11 +11,17 @@ class TaskReflex < StimulusReflex::Reflex
 
   def reorder(position)
     @task.insert_at(position)
+    morph :nothing
   end
 
   def assign
     @task.update(assignee_id: element.value)
     morph "#task-#{@task.id}-assignee", @task.assignee_name
+  end
+
+  def update
+    @task.update(task_params)
+    morph "#task_#{@task.id}", ApplicationController.render(@task)
   end
 
   def destroy
@@ -27,4 +33,8 @@ class TaskReflex < StimulusReflex::Reflex
   def find_task
     @task = Task.find(element.dataset.id)
   end
+
+  def task_params
+    params.require(:task).permit(:name)
+  end  
 end
