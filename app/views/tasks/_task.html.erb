@@ -5,9 +5,11 @@
       <% if task.complete? %>
         <del>
           <%= task.name %>
+      <span class="text-muted">Completed by: <%= task.completer_name %></span>
         </del>
       <% else %>
         <%= task.name %>
+      <span class="text-muted" id="task-<%= task.id %>-assignee"><%= task.assignee_name %></span>
       <% end %>
     </label>
     <div class="collapse mt-2" id="collapse-<%= task.id %>">

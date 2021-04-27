@@ -1,4 +1,4 @@
-user = User.create(
+User.create(
   first_name: Faker::Name.first_name,
   last_name: Faker::Name.last_name,
   email: "user@example.com",
@@ -14,14 +14,17 @@ users = 5.times.map do
     password: "password",
     password_confirmation: "password"
   )
-end  
+end
 
 list = List.create(name: Faker::Hipster.sentence)
 
 10.times do
+  completed = Faker::Boolean.boolean(0.2)
+
   list.tasks.create(
     creator: users.sample,
     name: Faker::Hipster.sentence,
-    completed_at: Faker::Boolean.boolean(0.2) ? Time.current : nil
+    completed_at: completed ? Time.current : nil,
+    completer: completed ? users.sample : nil
   )
 end
