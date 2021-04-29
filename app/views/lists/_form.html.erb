@@ -1,0 +1,11 @@
+<div class="card" id="new-list">
+  <div class="card-header">
+    New List
+  </div>
+  <div class="card-body">
+    <%= bootstrap_form_with model: list do |form| %>
+      <%= form.text_field :name %>
+      <%= form.primary %>
+    <% end %>  
+  </div>
+</div>
