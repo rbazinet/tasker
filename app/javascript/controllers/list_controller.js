@@ -17,7 +17,6 @@ export default class extends Controller {
     this.stimulate("TaskReflex#reorder", event.item, event.newIndex);
   }
 
-
   beforeCreateTask(element) {
     element.querySelectorAll("input").forEach((input) => input.blur());
     element.classList.add("form-disabled");

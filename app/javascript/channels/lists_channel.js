@@ -3,7 +3,6 @@ import CableReady from "cable_ready";
 
 consumer.subscriptions.create("ListsChannel", {
   connected() {
-
     // Called when the subscription is ready for use on the server
   },
 
@@ -12,6 +11,8 @@ consumer.subscriptions.create("ListsChannel", {
   },
 
   received(data) {
+    console.log("In received data")
+    console.log(data)
     if (data.cableReady) {
       CableReady.perform(data.operations);
     }
