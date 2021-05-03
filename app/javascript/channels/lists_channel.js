@@ -11,10 +11,7 @@ consumer.subscriptions.create("ListsChannel", {
   },
 
   received(data) {
-    console.log("In received data");
-    console.log(data.cableReady);
     if (data.cableReady) {
-      console.log(data);
       CableReady.perform(data.operations);
     }
   }
