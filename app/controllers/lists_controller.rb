@@ -20,16 +20,15 @@ class ListsController < ApplicationController
     if @list.save
       cable_ready[ListsChannel].outer_html(
         selector: "#new-list",
-        html: render_to_string(@list)
+        html: render_to_string(@list, assigns: {new_task: Task.new})
       )
-      cable_ready.broadcast_to(current_user)
     else
-      cable_ready[ListsChannel].outer_html(
+      cable_ready[ListsChannel].morph(
         selector: "#new-list",
         html: render_to_string(partial: "lists/form", locals: {list: @list})
       )
-      cable_ready.broadcast_to(current_user)
     end
+    cable_ready.broadcast_to(current_user)
   end
 
   private
