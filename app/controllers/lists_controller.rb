@@ -2,7 +2,7 @@ class ListsController < ApplicationController
   include CableReady::Broadcaster
 
   def index
-    @lists = List.all
+    @lists = current_team.lists
     @new_task ||= Task.new
   end
 
@@ -26,7 +26,7 @@ class ListsController < ApplicationController
         selector: "#lists",
         position: "beforeend",
         html: render_to_string(@list, assigns: {new_task: Task.new})
-      ).broadcast_to(current_user.team)
+      ).broadcast_to(current_team)
     else
       cable_ready[ListsChannel].morph(
         selector: "#list-#{params.dig(:list, :client_id)}",
@@ -37,7 +37,7 @@ class ListsController < ApplicationController
   end
 
   def destroy
-    @list = List.find(params[:id])
+    @list = current_team.lists.find(params[:id])
     @list.destroy!
     cable_ready[ListChannel].remove(selector: dom_id(@list))
     cable_ready.broadcast_to(@list)
