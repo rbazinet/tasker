@@ -7,6 +7,15 @@ class TaskReflex < StimulusReflex::Reflex
     else
       @task.update(completed_at: nil, completer: nil)
     end
+
+    cable_ready[ListChannel]
+      .remove(selector: "#task_#{@task.id}")
+      .insert_adjacent_html(
+        selector: "#list_#{@task.list_id} #{element.checked ? '#complete_tasks' : '#incomplete_tasks'}",
+        position: "beforeend",
+        html: ApplicationController.render(@task)
+      )
+      .broadcast_to(@task.list)
   end
 
   def reorder(position)
@@ -26,6 +35,15 @@ class TaskReflex < StimulusReflex::Reflex
 
   def destroy
     @task.destroy
+    cable_ready[ListChannel]
+      .remove(selector: "#task_#{@task.id}")
+      .broadcast_to(@task.list)
+
+    if @task.list.tasks.empty?
+      cable_ready[ListChannel]
+        .remove_css_class(selector: "#list_#{@task.list_id} #no-tasks", name: "d-none")
+        .broadcast_to(@task.list)
+    end
   end
 
   private
