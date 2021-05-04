@@ -13,7 +13,7 @@ export default class extends Controller {
         { channel: "ListChannel", list_id: this.data.get("id") },
         {
           received: (data) => {
-            if (data.CableReady) CableReady.perform(data.operations);
+            if (data.cableReady) CableReady.perform(data.operations);
           },
         }
     );
