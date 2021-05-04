@@ -64,3 +64,4 @@ gem 'bootstrap_form'
 gem 'stimulus_reflex', '~> 3.4.1'
 
 gem "devise", "~> 4.7"
+gem 'devise-bootstrap-views', '~> 1.1'
